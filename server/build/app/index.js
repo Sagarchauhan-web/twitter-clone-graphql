@@ -18,20 +18,20 @@ const server_1 = require("@apollo/server");
 const express4_1 = require("@apollo/server/express4");
 const body_parser_1 = __importDefault(require("body-parser"));
 // import cors from 'cors';
+const user_1 = require("./user");
 function initServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = (0, express_1.default)();
         app.use(body_parser_1.default.json());
         const graphqlServer = new server_1.ApolloServer({
             typeDefs: `
+    ${user_1.User.types}
     type Query {
-        sayHello: String
+        ${user_1.User.queries}
     }
     `,
             resolvers: {
-                Query: {
-                    sayHello: () => 'hello from GraphQL Server',
-                },
+                Query: Object.assign({}, user_1.User.resolvers.queries),
             },
         });
         yield graphqlServer.start();
