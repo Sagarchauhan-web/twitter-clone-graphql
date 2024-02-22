@@ -4,6 +4,9 @@ import { SlOptions } from 'react-icons/sl';
 import FeedCard from '@/components/FeedCard';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useCallback } from 'react';
+import toast from 'react-hot-toast';
+import { graphQLClient } from '@/clients/api';
+import { verifyUserGoogleTokenQuery } from '@/graphql/query/user';
 
 interface TwitterSidebarButton {
   title: string;
@@ -46,8 +49,28 @@ const sidebarMenuItems: TwitterSidebarButton[] = [
 ];
 
 export default function Home() {
-  const handleLoginWithGoogle = useCallback((cred: CredentialResponse) => {},
-  []);
+  const handleLoginWithGoogle = useCallback(
+    async (cred: CredentialResponse) => {
+      const googleToken = cred.credential;
+      if (!googleToken) {
+        toast.error(`Google Token not found`);
+      }
+      const verifyGoogleToken = await graphQLClient.request(
+        verifyUserGoogleTokenQuery,
+        {
+          token: googleToken,
+        },
+      );
+
+      toast.success('Verified Success');
+      console.log(verifyGoogleToken, 'verifyGoogleToken');
+
+      if (verifyGoogleToken) {
+        window.localStorage.setItem('token', JSON.stringify(verifyGoogleToken));
+      }
+    },
+    [],
+  );
 
   return (
     <div>
