@@ -7,7 +7,10 @@ export const graphQLClient = new GraphQLClient(
   {
     headers: () => ({
       Authorization: isClient
-        ? `Bearer ${window.localStorage.getItem('token')}`
+        ? `Bearer ${
+            JSON.parse(window.localStorage.getItem('token') as string)
+              .verifyGoogleToken
+          }`
         : '',
     }),
   },
