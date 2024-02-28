@@ -1,15 +1,20 @@
-import { BsBell, BsBookmark, BsEnvelope, BsTwitter } from 'react-icons/bs';
-import { BiHash, BiHomeCircle, BiMoney, BiUser } from 'react-icons/bi';
-import { SlOptions } from 'react-icons/sl';
-import FeedCard from '@/components/FeedCard';
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import { useCallback } from 'react';
-import toast from 'react-hot-toast';
 import { graphQLClient } from '@/clients/api';
+import FeedCard from '@/components/FeedCard';
 import { verifyUserGoogleTokenQuery } from '@/graphql/query/user';
 import { useCurrentUser } from '@/hooks/user';
-import { useQueryClient } from '@tanstack/react-query';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import Image from 'next/image';
+import { useCallback } from 'react';
+import toast from 'react-hot-toast';
+import {
+  BiHash,
+  BiHomeCircle,
+  BiImageAlt,
+  BiMoney,
+  BiUser,
+} from 'react-icons/bi';
+import { BsBell, BsBookmark, BsEnvelope, BsTwitter } from 'react-icons/bs';
+import { SlOptions } from 'react-icons/sl';
 
 interface TwitterSidebarButton {
   title: string;
@@ -76,6 +81,13 @@ export default function Home() {
     [],
   );
 
+  const handleSelectImage = useCallback(() => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+  }, []);
+
   return (
     <div>
       <div className='grid grid-cols-12 h-screen w-screen px-56'>
@@ -104,7 +116,7 @@ export default function Home() {
 
           {user && (
             <div
-              className='flex absolute bottom-5 right-1
+              className='flex absolute bottom-5 right-2
              rounded-lg gap-2 mt-auto w-full items-center bg-slate-900 hover:bg-slate-800 p-2'
             >
               <Image
@@ -123,6 +135,44 @@ export default function Home() {
           )}
         </div>
         <div className='col-span-6 border-r-[1px] h-screen no-scrollbar overflow-scroll border-l-[1px] border border-gray-800 '>
+          <div>
+            <div className='border border-gray-800 border-r-0 border-l-0 border-b-0 p-5 hover:bg-slate-900 cursor-pointer transition-all'>
+              <div className='grid grid-cols-12 gap-3'>
+                <div className='col-span-1'>
+                  <Image
+                    className='rounded-full'
+                    width={50}
+                    height={50}
+                    alt='avatar'
+                    src={
+                      user?.profileImageURL
+                        ? user?.profileImageURL
+                        : 'https://avatars.githubusercontent.com/u/81460273?v=4'
+                    }
+                  />
+                </div>
+                <div className='col-span-11'>
+                  <textarea
+                    name='tweet'
+                    id='tweet'
+                    className='w-full rounded-lg px-3 pt-1 bg-transparent border border-slate-700'
+                    placeholder="What's happening?"
+                    rows={3}
+                  ></textarea>
+
+                  <div className='mt-2 flex justify-between items-center'>
+                    <BiImageAlt
+                      onClick={handleSelectImage}
+                      className='text-xl'
+                    />
+                    <button className='text-sm font-semibold bg-[#1d9bf0] px-4 py-1 rounded-full'>
+                      Tweet
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <FeedCard />
           <FeedCard />
           <FeedCard />

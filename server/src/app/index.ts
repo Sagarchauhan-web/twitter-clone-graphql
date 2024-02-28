@@ -1,13 +1,12 @@
-import express from 'express';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import { JWTUser } from '../interfaces';
+import express from 'express';
 
-import { User } from './user';
 import { GraphqlContext } from '../interfaces';
 import JWTService from '../services/jwt';
+import { User } from './user';
 
 export async function initServer() {
   const app = express();
