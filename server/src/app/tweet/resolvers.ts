@@ -9,13 +9,16 @@ interface CreateTweetData {
 
 const queries = {
   getAllTweets: async (parent: any, args: any, ctx: GraphqlContext) => {
-    if (!ctx.user || !ctx.user.id) {
-      throw new Error('You must be logged in to get all tweets');
-    }
-    const tweets = await prismaClient.tweet.findMany({
-      where: { authorId: ctx.user.id },
-      orderBy: { createdAt: 'desc' },
-    });
+    // if (!ctx.user || !ctx.user.id) {
+    //   throw new Error('You must be logged in to get all tweets');
+    // }
+    const tweets = await prismaClient.tweet
+      .findMany
+      //   {
+      //   // where: { authorId: ctx.user.id },
+      //   // orderBy: { createdAt: 'desc' },
+      // }
+      ();
 
     return tweets;
   },

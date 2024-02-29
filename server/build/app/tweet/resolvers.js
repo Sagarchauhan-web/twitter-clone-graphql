@@ -13,13 +13,11 @@ exports.resolvers = void 0;
 const db_1 = require("../../clients/db");
 const queries = {
     getAllTweets: (parent, args, ctx) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!ctx.user || !ctx.user.id) {
-            throw new Error('You must be logged in to get all tweets');
-        }
-        const tweets = yield db_1.prismaClient.tweet.findMany({
-            where: { authorId: ctx.user.id },
-            orderBy: { createdAt: 'desc' },
-        });
+        // if (!ctx.user || !ctx.user.id) {
+        //   throw new Error('You must be logged in to get all tweets');
+        // }
+        const tweets = yield db_1.prismaClient.tweet
+            .findMany();
         return tweets;
     }),
 };
