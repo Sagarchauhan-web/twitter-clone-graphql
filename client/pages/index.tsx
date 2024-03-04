@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useCallback, useState } from 'react';
 import { BiImageAlt } from 'react-icons/bi';
 
-interface Tweet {
+export interface Tweet {
   id: number;
   content: string;
   imageURL: string;
